@@ -21,12 +21,11 @@ namespace TeamImpact
 		public override TaskStatus OnUpdate()
 		{
 			Vector2 dir = (target.Value - currentPosition.Value).normalized;
-			float angleTorotate = Vector2.SignedAngle(Vector2.right, dir - Vector2.Perpendicular(dir) * Vector2.Dot(Vector2.Perpendicular(dir), velocity.Value));
+			float angleToRotate = Vector2.SignedAngle(Vector2.right, dir - Vector2.Perpendicular(dir) * Vector2.Dot(Vector2.Perpendicular(dir), velocity.Value));
 
-			Debug.Log("TRee right " + Vector2.right);
-			controller.targetOrient = angleTorotate;
+			controller.targetOrient = angleToRotate;
 
-			if ((currentPosition.Value - target.Value).magnitude <= 1) ;
+			if ((currentPosition.Value - target.Value).magnitude <= 1);
             {
 				return TaskStatus.Success;
             }
