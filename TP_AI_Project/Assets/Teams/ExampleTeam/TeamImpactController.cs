@@ -21,7 +21,10 @@ namespace TeamImpact {
 
 		// Variables to modify
 		public float thrust = 0.5f;
-		float targetOrient = 0f;
+		public float targetOrient = 0f;
+		public bool shoot = false;
+		public bool dropMine = false;
+		public bool fireShockWAve = false;
 
 
 		private void Start()
@@ -52,17 +55,22 @@ namespace TeamImpact {
 					closestWP = wp;
 				}
             }
-			Vector2 dir = Vector2.zero;
-			if (closestWP != null)
+			behaviorTree.SetVariableValue("closestWP", closestWP.transform.position);
+			behaviorTree.SetVariableValue("currentPosition", spaceship.transform.position);
+			behaviorTree.SetVariableValue("velocity", spaceship.Velocity);
+			/*
+            Vector2 dir = Vector2.zero;
+            if (closestWP != null)
             {
-				dir = (closestWP.transform.position - spaceship.transform.position).normalized;
+                dir = (closestWP.transform.position - spaceship.transform.position).normalized;
             }
 
-			targetOrient = Vector2.SignedAngle(Vector2.right, dir -  Vector2.Perpendicular(dir) * Vector2.Dot(Vector2.Perpendicular(dir), spaceship.Velocity));
-			return new InputData(thrust, targetOrient, false, false, false);
+            targetOrient = Vector2.SignedAngle(Vector2.right, dir - Vector2.Perpendicular(dir) * Vector2.Dot(Vector2.Perpendicular(dir), spaceship.Velocity));
+
+            Debug.Log("Controller right " + Vector2.right);
+			*/
+
+			return new InputData(thrust, targetOrient, shoot, dropMine, fireShockWAve);
 		}
-
 	}
-
-
 }
