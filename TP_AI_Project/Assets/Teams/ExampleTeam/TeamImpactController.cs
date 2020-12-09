@@ -39,7 +39,6 @@ namespace TeamImpact {
 		public bool dropMine = false;
 		public bool fireShockWAve = false;
 
-
 		private void Start()
         {
 			behaviorTree = GetComponent<BehaviorTree>();
