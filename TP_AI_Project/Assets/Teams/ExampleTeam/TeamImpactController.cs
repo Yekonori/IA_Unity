@@ -83,7 +83,7 @@ namespace TeamImpact {
 			behaviorTree.SetVariableValue("currentPosition", spaceship.transform.position);
 			behaviorTree.SetVariableValue("velocity", spaceship.Velocity);
 			behaviorTree.SetVariableValue("capturedWP", myWaypoints.Count);
-			behaviorTree.SetVariableValue("notCapturedWP", waypointsNotOwn);
+			behaviorTree.SetVariableValue("notCapturedWP", waypointsNotOwn.Count);
 
 			// Energy
 			behaviorTree.SetVariableValue("energy", spaceship.Energy);
