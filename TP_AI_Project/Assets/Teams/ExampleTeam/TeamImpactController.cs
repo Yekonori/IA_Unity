@@ -28,6 +28,9 @@ namespace TeamImpact {
 
 		public SharedBool hasWaypointToConquest = true;
 
+		//Mine
+		public float safeDistanceToMine = 3f;
+		public SharedGameObjectList listMines = null;
 
 		// Variables to modify
 		public float thrust = 0.5f;
@@ -77,20 +80,36 @@ namespace TeamImpact {
 			}
 
 			//behaviorTree.SetVariableValue("closestWP", closestWP.transform.position);
+			// My spaceship 
 			behaviorTree.SetVariableValue("currentPosition", spaceship.transform.position);
 			behaviorTree.SetVariableValue("velocity", spaceship.Velocity);
+			behaviorTree.SetVariableValue("capturedWP", myWaypoints.Count);
+			behaviorTree.SetVariableValue("notCapturedWP", waypointsNotOwn);
 
-			/*
-            Vector2 dir = Vector2.zero;
-            if (closestWP != null)
+			// Energy
+			behaviorTree.SetVariableValue("energy", spaceship.Energy);
+
+			// Ennemy
+			behaviorTree.SetVariableValue("ennemyNbWP", ennemyWaypoints.Count);
+			behaviorTree.SetVariableValue("ennemyPosition", data.SpaceShips[1 - spaceship.Owner].transform.position);
+
+			// Temps restant
+			behaviorTree.SetVariableValue("timeLeft", data.timeLeft);
+
+			// Mines
+			bool isMineDangerous = false;
+			List<GameObject> listDangerousMines = new List<GameObject>();
+			foreach (Mine mine in data.Mines)
             {
-                dir = (closestWP.transform.position - spaceship.transform.position).normalized;
+				float distanceToMine = (mine.transform.position - spaceship.transform.position).magnitude;
+				if (distanceToMine < mine.ExplosionRadius + safeDistanceToMine)
+                {
+					isMineDangerous = true;
+					listDangerousMines.Add(mine.gameObject);
+				}
             }
-
-            targetOrient = Vector2.SignedAngle(Vector2.right, dir - Vector2.Perpendicular(dir) * Vector2.Dot(Vector2.Perpendicular(dir), spaceship.Velocity));
-
-            Debug.Log("Controller right " + Vector2.right);
-			*/
+			behaviorTree.SetVariableValue("isMineDangerous", isMineDangerous);
+			listMines.SetValue(listDangerousMines);
 
 			return new InputData(thrust, targetOrient, shoot, dropMine, fireShockWAve);
 		}
