@@ -15,7 +15,16 @@ namespace TeamImpact
 
 		public override TaskStatus OnUpdate()
 		{
-			controller.BehaviorTree.SetVariableValue("closestWP", controller.ClosestWP.transform.position);
+			if (controller.isChassingEnemy)
+            {
+				SharedVector3 enemyVector = (SharedVector3)controller.BehaviorTree.GetVariable("ennemyPosition");
+
+				controller.BehaviorTree.SetVariableValue("closestWP", enemyVector.Value);
+			}
+			else
+            {
+				controller.BehaviorTree.SetVariableValue("closestWP", controller.ClosestWP.transform.position);
+			}
 
 			return TaskStatus.Success;
 		}

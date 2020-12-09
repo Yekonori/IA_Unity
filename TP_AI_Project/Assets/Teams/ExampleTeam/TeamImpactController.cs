@@ -28,6 +28,9 @@ namespace TeamImpact {
 
 		public SharedBool hasWaypointToConquest = true;
 
+		[HideInInspector]
+		public bool isChassingEnemy = false;
+
 		//Mine
 		public float safeDistanceToMine = 3f;
 		public SharedGameObjectList listMines = null;

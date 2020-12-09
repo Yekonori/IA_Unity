@@ -25,7 +25,7 @@ namespace TeamImpact
 
 			controller.targetOrient = angleToRotate;
 
-			if ((currentPosition.Value - target.Value).magnitude <= 1);
+			if ((currentPosition.Value - target.Value).magnitude <= 1)
             {
 				return TaskStatus.Success;
             }
