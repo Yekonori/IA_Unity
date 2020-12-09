@@ -92,6 +92,7 @@ namespace TeamImpact {
 			// Ennemy
 			behaviorTree.SetVariableValue("ennemyNbWP", ennemyWaypoints.Count);
 			behaviorTree.SetVariableValue("ennemyPosition", data.SpaceShips[1 - spaceship.Owner].transform.position);
+			behaviorTree.SetVariableValue("isEnnemyStun", data.SpaceShips[1 - spaceship.Owner].IsStun());
 
 			// Temps restant
 			behaviorTree.SetVariableValue("timeLeft", data.timeLeft);
