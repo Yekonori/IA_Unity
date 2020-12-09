@@ -11,12 +11,22 @@ namespace TeamImpact {
 	public class TeamImpactController : BaseSpaceShipController
 	{
 		BehaviorTree behaviorTree;
+		public BehaviorTree BehaviorTree
+        {
+			get { return behaviorTree; }
+        }
 
 		List<WayPoint> waypoints;
 		List<WayPoint> myWaypoints;
 		List<WayPoint> ennemyWaypoints;
 		List<WayPoint> waypointsNotOwn;
 		[SerializeField] WayPoint closestWP = null;
+		public WayPoint ClosestWP
+        {
+			get { return closestWP; }
+        }
+
+		public SharedBool hasWaypointToConquest = true;
 
 
 		// Variables to modify
@@ -44,7 +54,8 @@ namespace TeamImpact {
 			ennemyWaypoints = waypoints.FindAll((wp) => wp.Owner != spaceship.Owner && wp.Owner != -1); //waypoints[0].Owner == -1 si pas contest
 			waypointsNotOwn = waypoints.Except(myWaypoints).ToList();
 
-			float minDistance = 1000f;
+            float minDistance = 1000f;
+
 			// try to go to closest wp not own
 			foreach (WayPoint wp in waypointsNotOwn)
             {
@@ -55,9 +66,20 @@ namespace TeamImpact {
 					closestWP = wp;
 				}
             }
-			behaviorTree.SetVariableValue("closestWP", closestWP.transform.position);
+
+			if (waypointsNotOwn.Count > 0)
+            {
+				hasWaypointToConquest.Value = true;
+			}
+			else
+            {
+				hasWaypointToConquest.Value = false;
+			}
+
+			//behaviorTree.SetVariableValue("closestWP", closestWP.transform.position);
 			behaviorTree.SetVariableValue("currentPosition", spaceship.transform.position);
 			behaviorTree.SetVariableValue("velocity", spaceship.Velocity);
+
 			/*
             Vector2 dir = Vector2.zero;
             if (closestWP != null)
@@ -72,5 +94,5 @@ namespace TeamImpact {
 
 			return new InputData(thrust, targetOrient, shoot, dropMine, fireShockWAve);
 		}
-	}
+    }
 }

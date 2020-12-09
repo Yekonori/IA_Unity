@@ -25,6 +25,12 @@ namespace TeamImpact
 
 			Debug.Log("TRee right " + Vector2.right);
 			controller.targetOrient = angleTorotate;
+
+			if ((currentPosition.Value - target.Value).magnitude <= 1) ;
+            {
+				return TaskStatus.Success;
+            }
+			
 			return TaskStatus.Running;
 		}
 	}
