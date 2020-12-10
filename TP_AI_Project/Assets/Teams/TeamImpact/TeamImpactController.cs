@@ -32,7 +32,6 @@ namespace TeamImpact {
 		public bool isChassingEnemy = false;
 
 		//Mine
-		public float safeDistanceToMine = 3f;
 		public SharedGameObjectList listMines = null;
 
 		// SpaceShipMaxSpeed
@@ -57,6 +56,9 @@ namespace TeamImpact {
 
 		public override InputData UpdateInput(SpaceShip spaceship, GameData data)
 		{
+
+
+
 			waypoints = data.WayPoints;
 			myWaypoints = waypoints.FindAll((wp) => wp.Owner == spaceship.Owner);
 			ennemyWaypoints = waypoints.FindAll((wp) => wp.Owner != spaceship.Owner && wp.Owner != -1); //waypoints[0].Owner == -1 si pas contest
@@ -110,7 +112,7 @@ namespace TeamImpact {
 			foreach (Mine mine in data.Mines)
             {
 				float distanceToMine = (mine.transform.position - spaceship.transform.position).magnitude;
-				if (distanceToMine < mine.ExplosionRadius + safeDistanceToMine)
+				if (distanceToMine < (mine.ExplosionRadius + 1f) && mine.IsActive)
                 {
 					isMineDangerous = true;
 					listDangerousMines.Add(mine.gameObject);
@@ -119,7 +121,15 @@ namespace TeamImpact {
 			behaviorTree.SetVariableValue("isMineDangerous", isMineDangerous);
 			listMines.SetValue(listDangerousMines);
 
-			return new InputData(thrust, targetOrient, shoot, dropMine, fireShockWAve);
+
+			InputData inData = new InputData(thrust, targetOrient, shoot, dropMine, fireShockWAve);
+			
+			// Variables to reset
+			shoot = false;
+			dropMine = false;
+			fireShockWAve = false;
+
+			return inData;
 		}
     }
 }
