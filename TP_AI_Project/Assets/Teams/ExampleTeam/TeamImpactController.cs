@@ -35,6 +35,9 @@ namespace TeamImpact {
 		public float safeDistanceToMine = 3f;
 		public SharedGameObjectList listMines = null;
 
+		// SpaceShipMaxSpeed
+		public float shipMaxSpeed;
+
 		// Variables to modify
 		public float thrust = 0.5f;
 		public float targetOrient = 0f;
@@ -49,7 +52,7 @@ namespace TeamImpact {
 
         public override void Initialize(SpaceShip spaceship, GameData data)
 		{
-			
+			shipMaxSpeed = spaceship.SpeedMax;
 		}
 
 		public override InputData UpdateInput(SpaceShip spaceship, GameData data)
@@ -87,6 +90,7 @@ namespace TeamImpact {
 			behaviorTree.SetVariableValue("velocity", spaceship.Velocity);
 			behaviorTree.SetVariableValue("capturedWP", myWaypoints.Count);
 			behaviorTree.SetVariableValue("notCapturedWP", waypointsNotOwn.Count);
+			behaviorTree.SetVariableValue("zAngle", spaceship.transform.rotation.eulerAngles.z);
 
 			// Energy
 			behaviorTree.SetVariableValue("energy", spaceship.Energy);
@@ -95,6 +99,7 @@ namespace TeamImpact {
 			behaviorTree.SetVariableValue("ennemyNbWP", ennemyWaypoints.Count);
 			behaviorTree.SetVariableValue("ennemyPosition", data.SpaceShips[1 - spaceship.Owner].transform.position);
 			behaviorTree.SetVariableValue("isEnnemyStun", data.SpaceShips[1 - spaceship.Owner].IsStun());
+			behaviorTree.SetVariableValue("ennemyVelocity", data.SpaceShips[1 - spaceship.Owner].Velocity);
 
 			// Temps restant
 			behaviorTree.SetVariableValue("timeLeft", data.timeLeft);
