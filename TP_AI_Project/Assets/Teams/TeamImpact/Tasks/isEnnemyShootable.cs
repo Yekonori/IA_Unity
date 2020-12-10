@@ -16,6 +16,13 @@ namespace TeamImpact
 		public float timeTolerance = 0.1f;
 		public float maxDistanceToShoot = 10f;
 
+		private TeamImpactController controller;
+
+		public override void OnStart()
+		{
+			controller = GetComponent<TeamImpactController>();
+		}
+
 		public override TaskStatus OnUpdate()
 		{
 			float shootAngle = Mathf.Deg2Rad * orientation.Value;
@@ -47,7 +54,31 @@ namespace TeamImpact
 
 			if (Mathf.Abs(timeDiff) < timeTolerance)
             {
-				return TaskStatus.Success;
+				Vector2 startRay = new Vector2(currentPosition.Value.x, currentPosition.Value.y);
+				Vector2 dirRay = new Vector2(controller.ClosestWP.transform.position.x, controller.ClosestWP.transform.position.y);
+
+				LayerMask layerMask = LayerMask.GetMask("Asteroid");
+				RaycastHit2D hit = Physics2D.Raycast(startRay, dirRay, maxDistanceToShoot, layerMask); //layer 12 = asteroids
+				Debug.DrawRay(startRay, dirRay.normalized * maxDistanceToShoot, Color.yellow);
+
+				if (hit.collider == null)
+                {
+					return TaskStatus.Success;
+                }
+				else
+                {
+					float distToEnemy = (currentPosition.Value - currentEnnemyPosition.Value).magnitude;
+					float distToHit = (currentPosition.Value - hit.collider.gameObject.transform.position).magnitude;
+
+					if (distToHit > distToEnemy)
+                    {
+						return TaskStatus.Failure;
+					}
+					else
+                    {
+						return TaskStatus.Success;
+					}
+				}
 			}
 			return TaskStatus.Failure;
 		}
