@@ -36,7 +36,7 @@ namespace TeamImpact
 
 			float distanceBetweenShips = (curPos - ennPos).magnitude;
 
-			if (!canIntersect || distanceBetweenShips > maxDistanceToShoot)
+			if (!canIntersect)
 			{
 				return TaskStatus.Failure;
 			}
@@ -55,8 +55,8 @@ namespace TeamImpact
 			if (Mathf.Abs(timeDiff) < timeTolerance)
             {
 				Vector2 startRay = new Vector2(currentPosition.Value.x, currentPosition.Value.y);
-				Vector2 dirRay = new Vector2(controller.ClosestWP.transform.position.x, controller.ClosestWP.transform.position.y);
-
+				//Vector2 dirRay = new Vector2(controller.ClosestWP.transform.position.x, controller.ClosestWP.transform.position.y);
+				Vector2 dirRay = intersection - startRay;
 				LayerMask layerMask = LayerMask.GetMask("Asteroid");
 				RaycastHit2D hit = Physics2D.Raycast(startRay, dirRay, maxDistanceToShoot, layerMask); //layer 12 = asteroids
 				Debug.DrawRay(startRay, dirRay.normalized * maxDistanceToShoot, Color.yellow);
@@ -67,8 +67,10 @@ namespace TeamImpact
                 }
 				else
                 {
-					float distToEnemy = (currentPosition.Value - currentEnnemyPosition.Value).magnitude;
-					float distToHit = (currentPosition.Value - hit.collider.gameObject.transform.position).magnitude;
+					//float distToEnemy = (currentPosition.Value - currentEnnemyPosition.Value).magnitude;
+					float distToEnemy = aiToI.magnitude;
+					float distToHit = (curPos - hit.point).magnitude;
+					
 
 					if (distToHit > distToEnemy)
                     {
